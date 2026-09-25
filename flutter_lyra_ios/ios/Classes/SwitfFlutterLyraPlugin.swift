@@ -1,4 +1,5 @@
 import Flutter
+import Foundation
 import UIKit
 import LyraPaymentSDK
 
@@ -122,10 +123,73 @@ public class SwiftFlutterLyraPlugin: NSObject, FlutterPlugin, LyraHostApi {
                 request.formToken,
                 onSuccess: { ( _ lyraResponse: LyraResponse) -> Void in
                     cancelProcessWork?.cancel()
-                    completion(
-                        lyraResponse.getResponseDataString(),
-                        nil
-                    )
+                    var lyraResponseData: String?
+
+                    let responseData = lyraResponse.getResponseData()
+
+                    do {
+                        let jsonObject: Any
+
+                        if let data = responseData as? Data {
+                            jsonObject = try JSONSerialization.jsonObject(
+                                with: data,
+                                options: []
+                            )
+                        } else if let responseString = responseData as? String,
+                                  let data = responseString.data(using: .utf8) {
+                            jsonObject = try JSONSerialization.jsonObject(
+                                with: data,
+                                options: []
+                            )
+                        } else {
+                            jsonObject = responseData
+                        }
+
+                        guard JSONSerialization.isValidJSONObject(jsonObject) else {
+                            completion(
+                                nil,
+                                FlutterError(
+                                    code: "lyra_process_error_code",
+                                    message: "The Lyra response is not valid JSON",
+                                    details: nil
+                                )
+                            )
+                            return
+                        }
+
+                        let jsonData = try JSONSerialization.data(
+                            withJSONObject: jsonObject,
+                            options: []
+                        )
+
+                        guard let jsonString = String(
+                            data: jsonData,
+                            encoding: .utf8
+                        ) else {
+                            completion(
+                                nil,
+                                FlutterError(
+                                    code: "lyra_process_error_code",
+                                    message: "Could not encode the Lyra response as JSON",
+                                    details: nil
+                                )
+                            )
+                            return
+                        }
+
+                        lyraResponseData = jsonString
+                        print("Lyra Response data: \(jsonString)")
+                        completion(lyraResponseData, nil)
+                    } catch {
+                        completion(
+                            nil,
+                            FlutterError(
+                                code: "lyra_process_error_code",
+                                message: error.localizedDescription,
+                                details: nil
+                            )
+                        )
+                    }
                 },
                 onError: { (_ error: LyraError, _ lyraResponse: LyraResponse?) -> Void in
                     cancelProcessWork?.cancel()
