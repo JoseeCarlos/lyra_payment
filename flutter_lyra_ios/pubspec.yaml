@@ -1,0 +1,28 @@
+name: flutter_lyra_ios
+description: Internal Zencillo iOS implementation of the flutter_lyra plugin.
+
+publish_to: none
+
+version: 0.7.1
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+  flutter: ">=3.22.0"
+
+flutter:
+  plugin:
+    implements: flutter_lyra
+    platforms:
+      ios:
+        pluginClass: FlutterLyraPlugin
+        dartPluginClass: FlutterLyraIOS
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_lyra_platform_interface: ^0.7.0
+dev_dependencies:
+  analyzer: ^4.7.0
+  flutter_test:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.0

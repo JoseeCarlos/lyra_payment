@@ -1,0 +1,29 @@
+name: flutter_lyra_android
+description: Internal Zencillo Android implementation of the flutter_lyra plugin.
+
+publish_to: none
+
+version: 0.7.1
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+  flutter: ">=3.22.0"
+
+flutter:
+  plugin:
+    implements: flutter_lyra
+    platforms:
+      android:
+        package: com.zencillo.flutter_lyra.android
+        pluginClass: FlutterLyraPlugin
+        dartPluginClass: FlutterLyraAndroid
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_lyra_platform_interface: ^0.7.0
+dev_dependencies:
+  analyzer: ^5.13.0
+  flutter_test:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.6

@@ -1,0 +1,9 @@
+name: zencillo_lyra_workspace
+
+publish_to: none
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+
+dependencies:
+  melos: ^3.1.1

@@ -1,0 +1,22 @@
+name: flutter_lyra_platform_interface
+description: Internal Zencillo platform interface for the flutter_lyra plugin.
+
+publish_to: none
+
+version: 0.7.1
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.0
+
+dev_dependencies:
+  analyzer: ^4.7.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.1
+  pigeon: ^7.0.0
